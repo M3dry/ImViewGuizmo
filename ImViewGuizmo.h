@@ -31,6 +31,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ======================================================*/
 
+#include "imgui.h"
 #ifndef IMVIEWGUIZMO_VEC3
     #define IMVIEWGUIZMO_USE_GLM_DEFAULTS
     #ifndef GLM_ENABLE_EXPERIMENTAL
@@ -333,7 +334,7 @@ namespace ImViewGuizmo {
         const ImVec2 originScreenPos = worldToScreen(origin);
 
         // Hover detection 
-        const bool canInteract = !(io.ConfigFlags & ImGuiConfigFlags_NoMouse);
+        const bool canInteract = !(io.ConfigFlags & ImGuiConfigFlags_NoMouse) && ImGui::IsWindowHovered();
         if (canInteract && ctx.activeTool == TOOL_NONE && !ctx.isAnimating) {
             ImVec2 mousePos = io.MousePos;
             float distToCenterSq = ImLengthSqr(ImVec2(mousePos.x - position.x, mousePos.y - position.y));
@@ -487,6 +488,8 @@ namespace ImViewGuizmo {
                 isHovered = true;
             }
         }
+        isHovered &= ImGui::IsWindowHovered();
+
         ctx.isZoomButtonHovered = isHovered;
         
         if (canInteract && (isHovered || ctx.activeTool == TOOL_DOLLY)) {
@@ -553,6 +556,7 @@ namespace ImViewGuizmo {
                 isHovered = true;
             }
         }
+        isHovered &= ImGui::IsWindowHovered();
         ctx.isPanButtonHovered = isHovered;
 
         if (canInteract && (isHovered || ctx.activeTool == TOOL_PAN)) {
