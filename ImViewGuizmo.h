@@ -198,7 +198,7 @@ namespace ImViewGuizmo
         return ctx;
     }
 
-    static float ImLengthSqr(const ImVec2& v) { return v.x * v.x + v.y * v.y; }
+    static float LengthSqr(const ImVec2& v) { return v.x * v.x + v.y * v.y; }
     static float mix(float a, float b, float t) { return a * (1.0f - t) + b * t; }
 
     inline void BeginFrame() {
@@ -337,7 +337,7 @@ namespace ImViewGuizmo {
         const bool canInteract = !(io.ConfigFlags & ImGuiConfigFlags_NoMouse) && ImGui::IsWindowHovered();
         if (canInteract && ctx.activeTool == TOOL_NONE && !ctx.isAnimating) {
             ImVec2 mousePos = io.MousePos;
-            float distToCenterSq = ImLengthSqr(ImVec2(mousePos.x - position.x, mousePos.y - position.y));
+            float distToCenterSq = LengthSqr(ImVec2(mousePos.x - position.x, mousePos.y - position.y));
 
             if (distToCenterSq < (halfGizmoSize + scaledCircleRadius) * (halfGizmoSize + scaledCircleRadius)) {
                 const float minDistanceSq = scaledCircleRadius * scaledCircleRadius;
@@ -346,11 +346,11 @@ namespace ImViewGuizmo {
                         continue;
                     
                     ImVec2 handlePos = worldToScreen(GizmoMath::multiply_vf(axis.direction, style.lineLength));
-                    if (ImLengthSqr(ImVec2(handlePos.x - mousePos.x, handlePos.y - mousePos.y)) < minDistanceSq)
+                    if (LengthSqr(ImVec2(handlePos.x - mousePos.x, handlePos.y - mousePos.y)) < minDistanceSq)
                         ctx.hoveredAxisID = axis.id;
                 }
                 if (ctx.hoveredAxisID == -1 &&
-                    ImLengthSqr(ImVec2(originScreenPos.x - mousePos.x, originScreenPos.y - mousePos.y)) < scaledBigCircleRadius * scaledBigCircleRadius)
+                    LengthSqr(ImVec2(originScreenPos.x - mousePos.x, originScreenPos.y - mousePos.y)) < scaledBigCircleRadius * scaledBigCircleRadius)
                     ctx.hoveredAxisID = 6;
             }
         }
@@ -484,7 +484,7 @@ namespace ImViewGuizmo {
 
         bool isHovered = false;
         if (canInteract && (ctx.activeTool == TOOL_NONE || ctx.activeTool == TOOL_DOLLY)) {
-            if (ImLengthSqr({io.MousePos.x - center.x, io.MousePos.y - center.y}) < radius * radius) {
+            if (LengthSqr({io.MousePos.x - center.x, io.MousePos.y - center.y}) < radius * radius) {
                 isHovered = true;
             }
         }
@@ -552,7 +552,7 @@ namespace ImViewGuizmo {
 
         bool isHovered = false;
         if (canInteract && (ctx.activeTool == TOOL_NONE || ctx.activeTool == TOOL_PAN)) {
-            if (ImLengthSqr({io.MousePos.x - center.x, io.MousePos.y - center.y}) < radius * radius) {
+            if (LengthSqr({io.MousePos.x - center.x, io.MousePos.y - center.y}) < radius * radius) {
                 isHovered = true;
             }
         }
